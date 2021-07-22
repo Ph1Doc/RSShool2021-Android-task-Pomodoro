@@ -2,8 +2,9 @@ package com.example.pomodoro.stopwatch
 
 data class Stopwatch(
     val id: Int,
-    var currentMs: Long,
+    var timeLeft: Long,
     var isStarted: Boolean,
-    var current: Long,
-    val newTimer: Boolean
+    var timeSpend: Long,
+    val newTimer: Boolean,
+    val startTime: Long
 )

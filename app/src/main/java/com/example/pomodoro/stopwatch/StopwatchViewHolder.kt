@@ -1,6 +1,7 @@
 package com.example.pomodoro.stopwatch
 
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.os.CountDownTimer
 import android.util.Log
@@ -20,7 +21,7 @@ class StopwatchViewHolder(
     private var timerNotAdd = true
 
     fun bind(stopwatch: Stopwatch) {
-        binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
+        binding.stopwatchTimer.text = stopwatch.timeLeft.displayTime()
 
         if (stopwatch.isStarted) {
             startTimer(stopwatch)
@@ -34,14 +35,14 @@ class StopwatchViewHolder(
     private fun initButtonsListeners(stopwatch: Stopwatch) {
         binding.startPauseButton.setOnClickListener {
             if (stopwatch.isStarted) {
-                listener.stop(stopwatch.id, stopwatch.currentMs)
+                listener.stop(stopwatch.id, stopwatch.timeLeft)
             } else {
                 listener.start(stopwatch.id)
             }
         }
 
         if (stopwatch.newTimer) {
-            binding.customView.setPeriod(stopwatch.currentMs)
+            binding.customView.setPeriod(stopwatch.timeLeft)
             binding.customView.setCurrent(0L)
             timerNotAdd = false
         }
@@ -53,6 +54,11 @@ class StopwatchViewHolder(
     private fun startTimer(stopwatch: Stopwatch) {
         val drawable = resources.getDrawable(R.drawable.ic_baseline_pause_24)
         binding.startPauseButton.setImageDrawable(drawable)
+
+        binding.root.setBackgroundResource(R.color.cardview_light_background)
+        binding.startPauseButton.setBackgroundResource(R.color.cardview_light_background)
+        binding.restartButton.setBackgroundResource(R.color.cardview_light_background)
+        binding.deleteButton.setBackgroundResource(R.color.cardview_light_background)
 
         timer?.cancel()
         timer = getCountDownTimer(stopwatch)
@@ -77,20 +83,27 @@ class StopwatchViewHolder(
             val interval = UNIT_TEN_MS
 
             override fun onTick(millisUntilFinished: Long) {
-                if (stopwatch.currentMs >= interval) {
-                    stopwatch.currentMs -= interval
-                    binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
+                if (stopwatch.timeLeft >= interval) {
+                    stopwatch.timeLeft -= interval
+                    binding.stopwatchTimer.text = stopwatch.timeLeft.displayTime()
 
-                    stopwatch.current += interval
-                    binding.customView.setCurrent(stopwatch.current)
+                    stopwatch.timeSpend += interval
+                    binding.customView.setCurrent(stopwatch.timeSpend)
 
                 } else {
                     stopTimer(stopwatch)
+                    onFinish()
                 }
+
             }
 
             override fun onFinish() {
-                binding.stopwatchTimer.text = stopwatch.currentMs.displayTime()
+                binding.stopwatchTimer.text = stopwatch.timeSpend.displayTime()
+                stopwatch.timeLeft = stopwatch.timeSpend
+                binding.root.setBackgroundColor(Color.RED)
+                binding.startPauseButton.setBackgroundColor(Color.RED)
+                binding.restartButton.setBackgroundColor(Color.RED)
+                binding.deleteButton.setBackgroundColor(Color.RED)
             }
         }
     }
@@ -117,7 +130,7 @@ class StopwatchViewHolder(
     private companion object {
 
         private const val START_TIME = "00:00:00"
-        private const val UNIT_TEN_MS = 30L
+        private const val UNIT_TEN_MS = 10L
         private const val PERIOD  = 1000L * 60L * 60L * 24L // Day
     }
 }
