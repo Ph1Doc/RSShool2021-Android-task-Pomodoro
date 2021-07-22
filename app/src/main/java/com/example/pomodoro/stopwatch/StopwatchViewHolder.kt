@@ -44,6 +44,11 @@ class StopwatchViewHolder(
         if (stopwatch.newTimer) {
             binding.customView.setPeriod(stopwatch.timeLeft)
             binding.customView.setCurrent(0L)
+
+            binding.root.setBackgroundResource(R.color.cardview_light_background)
+            binding.startPauseButton.setBackgroundResource(R.color.cardview_light_background)
+            binding.restartButton.setBackgroundResource(R.color.cardview_light_background)
+            binding.deleteButton.setBackgroundResource(R.color.cardview_light_background)
             timerNotAdd = false
         }
 

@@ -1,14 +1,12 @@
 package foregroundservice
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.net.wifi.WpsInfo.INVALID
 import android.os.Build
 import android.os.IBinder
+import android.provider.Settings
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.pomodoro.MainActivity
@@ -31,6 +29,18 @@ class ForegroundService : Service() {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(getPendingIntent())
             .setSilent(true)
+            .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+    }
+
+    private val builderFinish by lazy {
+        NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle("Pomodoro timer")
+            .setGroup("Timer")
+            .setGroupSummary(false)
+            .setDefaults(Notification.DEFAULT_VIBRATE)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setContentIntent(getPendingIntent())
+            .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
             .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
     }
 
@@ -90,9 +100,7 @@ class ForegroundService : Service() {
                 if ((runTimer + startTime - System.currentTimeMillis()) <= 0L) {
                     notificationManager?.notify(
                         NOTIFICATION_ID,
-                        getNotification(
-                            "Timer finished"
-                        )
+                        getNotificationAboutFinish()
                     )
                 }
             }
@@ -131,6 +139,7 @@ class ForegroundService : Service() {
     }
 
     private fun getNotification(content: String) = builder.setContentText(content).build()
+    private fun getNotificationAboutFinish() = builderFinish.setContentText("Time up").build()
 
 
     private fun createChannel() {
