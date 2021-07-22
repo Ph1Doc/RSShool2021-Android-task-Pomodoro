@@ -49,6 +49,19 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginRight="10dp" />
 
+        <customview.CustomView
+            android:id="@+id/customView"
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:layout_marginEnd="64dp"
+            android:padding="8dp"
+            app:custom_color="@color/purple_500"
+            app:custom_style="fill"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/restart_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.636" />
+
         <ImageButton
             android:id="@+id/restart_button"
             android:layout_width="0dp"

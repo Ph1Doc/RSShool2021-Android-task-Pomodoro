@@ -2,6 +2,7 @@ package com.example.pomodoro
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity(), StopwatchListener {
 
         binding.addNewStopwatchButton.setOnClickListener {
             if (binding.minutes.text.toString().toIntOrNull() != null ) {
-                stopwatches.add(Stopwatch(nextId++, binding.minutes.text.toString().toLong() * 10 * 60, false))
+                stopwatches.add(Stopwatch(nextId++, binding.minutes.text.toString().toLong() * 1000 * 60, false, current = 0L, newTimer = true))
                 stopwatchAdapter.submitList(stopwatches.toList())
             } else {
                 Toast.makeText(this, "Enter the time", Toast.LENGTH_SHORT).show()
@@ -53,6 +54,7 @@ class MainActivity : AppCompatActivity(), StopwatchListener {
 
     override fun stop(id: Int, currentMs: Long) {
         changeStopwatch(id, currentMs, false)
+//        Log.d("!!!!", "!!!!!!! currentMs " + currentMs)
     }
 
     override fun reset(id: Int) {
@@ -68,9 +70,9 @@ class MainActivity : AppCompatActivity(), StopwatchListener {
         val newTimers = mutableListOf<Stopwatch>()
         stopwatches.forEach {
             if (it.id == id) {
-                newTimers.add(Stopwatch(it.id, currentMs ?: it.currentMs, isStarted))
+                newTimers.add(Stopwatch(it.id, currentMs ?: it.currentMs, isStarted, it.current, newTimer = false))
             } else {
-                newTimers.add(it)
+                newTimers.add(Stopwatch(it.id, it.currentMs, false, it.current, newTimer = false))
             }
         }
         stopwatchAdapter.submitList(newTimers)
