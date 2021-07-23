@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
 
         binding.addNewStopwatchButton.setOnClickListener {
             if (binding.minutes.text.toString().toIntOrNull() != null ) {
-                stopwatches.add(Stopwatch(nextId++, binding.minutes.text.toString().toLong() * 1000 * 60, false, timeSpend = 0L, newTimer = true, System.currentTimeMillis()))
+                stopwatches.add(Stopwatch(nextId++, binding.minutes.text.toString().toLong() * 1000 * 60, false, timeSpend = 0L, newTimer = true, System.currentTimeMillis(), isFinish = false))
                 stopwatchAdapter.submitList(stopwatches.toList())
             } else {
                 Toast.makeText(this, "Enter the time", Toast.LENGTH_SHORT).show()
@@ -100,9 +100,9 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         val newTimers = mutableListOf<Stopwatch>()
         stopwatches.forEach {
             if (it.id == id) {
-                newTimers.add(Stopwatch(it.id, currentMs ?: it.timeLeft, isStarted, it.timeSpend, newTimer = false, System.currentTimeMillis()))
+                newTimers.add(Stopwatch(it.id, currentMs ?: it.timeLeft, isStarted, it.timeSpend, newTimer = false, System.currentTimeMillis(), it.isFinish))
             } else {
-                newTimers.add(Stopwatch(it.id, it.timeLeft, false, it.timeSpend, newTimer = false, System.currentTimeMillis()))
+                newTimers.add(Stopwatch(it.id, it.timeLeft, false, it.timeSpend, newTimer = false, System.currentTimeMillis(), it.isFinish))
             }
         }
         stopwatchAdapter.submitList(newTimers)

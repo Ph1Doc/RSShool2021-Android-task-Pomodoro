@@ -23,6 +23,10 @@ class StopwatchViewHolder(
     fun bind(stopwatch: Stopwatch) {
         binding.stopwatchTimer.text = stopwatch.timeLeft.displayTime()
 
+        if (stopwatch.isFinish) {
+            binding.root.setBackgroundResource(R.color.brown)
+        }
+
         if (stopwatch.isStarted) {
             startTimer(stopwatch)
         } else {
@@ -46,24 +50,16 @@ class StopwatchViewHolder(
             binding.customView.setCurrent(0L)
 
             binding.root.setBackgroundResource(R.color.cardview_light_background)
-            binding.startPauseButton.setBackgroundResource(R.color.cardview_light_background)
-            binding.restartButton.setBackgroundResource(R.color.cardview_light_background)
-            binding.deleteButton.setBackgroundResource(R.color.cardview_light_background)
             timerNotAdd = false
         }
-
-        binding.restartButton.setOnClickListener { listener.reset(stopwatch.id) }
+        
         binding.deleteButton.setOnClickListener { listener.delete(stopwatch.id) }
     }
 
     private fun startTimer(stopwatch: Stopwatch) {
-        val drawable = resources.getDrawable(R.drawable.ic_baseline_pause_24)
-        binding.startPauseButton.setImageDrawable(drawable)
-
+        stopwatch.isFinish = false
+        binding.startPauseButton.text = "STOP"
         binding.root.setBackgroundResource(R.color.cardview_light_background)
-        binding.startPauseButton.setBackgroundResource(R.color.cardview_light_background)
-        binding.restartButton.setBackgroundResource(R.color.cardview_light_background)
-        binding.deleteButton.setBackgroundResource(R.color.cardview_light_background)
 
         timer?.cancel()
         timer = getCountDownTimer(stopwatch)
@@ -74,9 +70,7 @@ class StopwatchViewHolder(
     }
 
     private fun stopTimer(stopwatch: Stopwatch) {
-        val drawable = resources.getDrawable(R.drawable.ic_baseline_play_arrow_24)
-        binding.startPauseButton.setImageDrawable(drawable)
-
+        binding.startPauseButton.text = "START"
         timer?.cancel()
 
         binding.blinkingIndicator.isInvisible = true
@@ -105,10 +99,9 @@ class StopwatchViewHolder(
             override fun onFinish() {
                 binding.stopwatchTimer.text = stopwatch.timeSpend.displayTime()
                 stopwatch.timeLeft = stopwatch.timeSpend
-                binding.root.setBackgroundColor(Color.RED)
-                binding.startPauseButton.setBackgroundColor(Color.RED)
-                binding.restartButton.setBackgroundColor(Color.RED)
-                binding.deleteButton.setBackgroundColor(Color.RED)
+
+                binding.root.setBackgroundResource(R.color.brown)
+                stopwatch.isFinish = true
             }
         }
     }
