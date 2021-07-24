@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         closeApp()
     }
 
-    fun closeApp() {
+    private fun closeApp() {
         val quitDialog = AlertDialog.Builder (
             this
         )
@@ -147,25 +147,6 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         stopwatches.addAll(newTimers)
     }
 
-    private fun Long.displayTime(): String {
-        if (this <= 0L) {
-            return START_TIME
-        }
-        val h = this / 1000 / 3600
-        val m = this / 1000 % 3600 / 60
-        val s = this / 1000 % 60
-
-        return "${displaySlot(h)}:${displaySlot(m)}:${displaySlot(s)}"
-    }
-
-    private fun displaySlot(count: Long): String {
-        return if (count / 10L > 0) {
-            "$count"
-        } else {
-            "0$count"
-        }
-    }
-
     private fun ActionBar.setTitleColor(color: Int) {
         val text = SpannableString(title ?: "")
         text.setSpan(ForegroundColorSpan(color),0,text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
@@ -174,11 +155,5 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
 
     private fun isDarkTheme(): Boolean {
         return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-    }
-
-    private companion object {
-
-        private const val INTERVAL = 10L
-        private const val START_TIME = "00:00:00"
     }
 }

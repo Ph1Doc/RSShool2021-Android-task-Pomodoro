@@ -1,10 +1,10 @@
 package com.example.pomodoro.stopwatch
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pomodoro.R
@@ -87,6 +87,7 @@ class StopwatchViewHolder(
         binding.deleteButton.setOnClickListener { listener.delete(stopwatch.id) }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun startTimer(stopwatch: Stopwatch) {
         stopwatch.isFinish = false
 
@@ -106,6 +107,7 @@ class StopwatchViewHolder(
         (binding.blinkingIndicator.background as? AnimationDrawable)?.start()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun stopTimer(stopwatch: Stopwatch) {
         binding.startPauseButton.text = "START"
         timer?.cancel()

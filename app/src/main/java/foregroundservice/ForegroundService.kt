@@ -7,7 +7,6 @@ import android.net.wifi.WpsInfo.INVALID
 import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.pomodoro.MainActivity
 import com.example.pomodoro.R
