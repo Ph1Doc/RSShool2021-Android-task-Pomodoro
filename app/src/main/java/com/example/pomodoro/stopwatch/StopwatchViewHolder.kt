@@ -115,7 +115,7 @@ class StopwatchViewHolder(
 
         if (stopwatch.isFinish) {
             stopwatch.timeLeft = stopwatch.timerTime
-            binding.stopwatchTimer.text = stopwatch.timerTime.displayTime()
+            binding.stopwatchTimer.text = START_TIME
             stopwatch.timeSpend = 0
         }
     }
@@ -142,7 +142,9 @@ class StopwatchViewHolder(
             }
 
             override fun onFinish() {
-                binding.stopwatchTimer.text = stopwatch.timerTime.displayTime()
+                // Сделал потому что в чеклисте так написано, приятнее было бы если бы binding.stopwatchTimer.text = stopwatch.timerTime.displayTime()
+                binding.stopwatchTimer.text = START_TIME
+
                 stopwatch.timeLeft = stopwatch.timerTime
                 stopwatch.timeSpend = 0
 

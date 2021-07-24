@@ -1,10 +1,21 @@
 package com.example.pomodoro
 
 import android.content.Intent
+import android.content.res.Configuration
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.widget.Toast
-import androidx.lifecycle.*
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pomodoro.databinding.ActivityMainBinding
 import com.example.pomodoro.stopwatch.Stopwatch
@@ -34,6 +45,19 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
             adapter = stopwatchAdapter
         }
 
+        supportActionBar?.apply {
+
+            setBackgroundDrawable(
+                ColorDrawable(
+                    Color.parseColor("#ec5656")
+                )
+            )
+
+        }
+        if (isDarkTheme()) {
+            supportActionBar?.setTitleColor(Color.BLACK)
+        }
+
         binding.addNewStopwatchButton.setOnClickListener {
             if (binding.minutes.text.toString().toIntOrNull() != null ) {
                 if (binding.minutes.text.toString().toLong() <= 5999 ) {
@@ -47,6 +71,23 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
             }
         }
 
+    }
+
+    override fun onBackPressed() {
+        closeApp()
+    }
+
+    fun closeApp() {
+        val quitDialog = AlertDialog.Builder (
+            this
+        )
+        quitDialog.setTitle("Are you sure you want to exit app?")
+        quitDialog.setPositiveButton("Yes") { _, _ -> finish()
+            onAppForegrounded()
+            android.os.Process.killProcess(android.os.Process.myPid())
+        }
+        quitDialog.setNegativeButton("No") { _, _ -> }
+        quitDialog.show()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
@@ -123,6 +164,16 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         } else {
             "0$count"
         }
+    }
+
+    private fun ActionBar.setTitleColor(color: Int) {
+        val text = SpannableString(title ?: "")
+        text.setSpan(ForegroundColorSpan(color),0,text.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        title = text
+    }
+
+    private fun isDarkTheme(): Boolean {
+        return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 
     private companion object {
