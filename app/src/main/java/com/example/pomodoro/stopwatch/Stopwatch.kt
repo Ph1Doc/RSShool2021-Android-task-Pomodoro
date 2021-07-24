@@ -7,5 +7,6 @@ data class Stopwatch(
     var timeSpend: Long,
     var newTimer: Boolean,
     var startTime: Long,
-    var isFinish: Boolean
+    var isFinish: Boolean,
+    var timerTime: Long
 )

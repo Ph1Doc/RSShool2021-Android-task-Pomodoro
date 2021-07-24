@@ -88,8 +88,8 @@ class StopwatchViewHolder(
         (binding.blinkingIndicator.background as? AnimationDrawable)?.stop()
 
         if (stopwatch.isFinish) {
-            stopwatch.timeLeft = stopwatch.timeSpend + stopwatch.timeLeft
-            binding.stopwatchTimer.text = stopwatch.timeLeft.displayTime()
+            stopwatch.timeLeft = stopwatch.timerTime
+            binding.stopwatchTimer.text = stopwatch.timerTime.displayTime()
             stopwatch.timeSpend = 0
         }
     }
@@ -117,8 +117,8 @@ class StopwatchViewHolder(
             }
 
             override fun onFinish() {
-                binding.stopwatchTimer.text = stopwatch.timeSpend.displayTime()
-                stopwatch.timeLeft = stopwatch.timeSpend + stopwatch.timeLeft
+                binding.stopwatchTimer.text = stopwatch.timerTime.displayTime()
+                stopwatch.timeLeft = stopwatch.timerTime
                 stopwatch.timeSpend = 0
 
                 binding.root.setBackgroundResource(R.color.brown)

@@ -29,39 +29,39 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="00:00:00:00"
+            android:text="00:00:00"
             android:textSize="24sp"
             android:theme="@style/Theme.AppCompat.DayNight"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/blinking_indicator"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="10dp" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/start_pause_button"
             android:layout_width="102dp"
             android:layout_height="45dp"
+            android:layout_marginEnd="12dp"
             android:backgroundTint="@color/red"
             android:text="START"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/delete_button"
-            app:layout_constraintHorizontal_bias="0.857"
+            app:layout_constraintHorizontal_bias="0.948"
             app:layout_constraintStart_toEndOf="@+id/stopwatch_timer"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
         <customview.CustomView
             android:id="@+id/customView"
-            android:layout_width="29dp"
-            android:layout_height="29dp"
+            android:layout_width="33dp"
+            android:layout_height="31dp"
             android:padding="8dp"
             app:custom_color="@color/red"
             app:custom_style="fill"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/start_pause_button"
+            app:layout_constraintHorizontal_bias="0.472"
             app:layout_constraintStart_toEndOf="@+id/stopwatch_timer"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.636" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/delete_button"
