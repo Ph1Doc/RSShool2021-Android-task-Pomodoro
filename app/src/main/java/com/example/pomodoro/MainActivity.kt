@@ -2,7 +2,6 @@ package com.example.pomodoro
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.lifecycle.*
@@ -12,9 +11,6 @@ import com.example.pomodoro.stopwatch.Stopwatch
 import com.example.pomodoro.stopwatch.StopwatchAdapter
 import com.example.pomodoro.stopwatch.StopwatchListener
 import foregroundservice.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
 

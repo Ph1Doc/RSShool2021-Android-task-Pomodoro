@@ -1,5 +1,6 @@
 package com.example.pomodoro.stopwatch
 
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import android.os.CountDownTimer
@@ -24,7 +25,13 @@ class StopwatchViewHolder(
         if (stopwatch.isFinish) {
             binding.root.setBackgroundResource(R.color.brown)
         } else {
-            binding.root.setBackgroundResource(R.color.cardview_light_background)
+            if (isDarkTheme()) {
+                binding.root.setBackgroundResource(R.color.cardview_shadow_end_color)
+                binding.deleteButton.setBackgroundResource(R.color.cardview_shadow_end_color)
+            } else {
+                binding.root.setBackgroundResource(R.color.cardview_light_background)
+            }
+
         }
 
         if (stopwatch.timeSpend.compareTo(0) != 0 ) {
@@ -67,7 +74,12 @@ class StopwatchViewHolder(
             binding.customView.setPeriod(stopwatch.timerTime)
             binding.customView.setCurrent(0L)
 
-            binding.root.setBackgroundResource(R.color.cardview_light_background)
+            if (isDarkTheme()) {
+                binding.root.setBackgroundResource(R.color.cardview_shadow_end_color)
+            } else {
+                binding.root.setBackgroundResource(R.color.cardview_light_background)
+            }
+
             timerNotAdd = false
             stopwatch.isStarted = false
         }
@@ -79,7 +91,11 @@ class StopwatchViewHolder(
         stopwatch.isFinish = false
 
         binding.startPauseButton.text = "STOP"
-        binding.root.setBackgroundResource(R.color.cardview_light_background)
+        if (isDarkTheme()) {
+            binding.root.setBackgroundResource(R.color.cardview_shadow_end_color)
+        } else {
+            binding.root.setBackgroundResource(R.color.cardview_light_background)
+        }
         timer?.cancel()
 
         stopwatch.startTime = System.currentTimeMillis()
@@ -156,6 +172,10 @@ class StopwatchViewHolder(
         } else {
             "0$count"
         }
+    }
+
+    private fun isDarkTheme(): Boolean {
+        return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
     }
 
     private companion object {
