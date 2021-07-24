@@ -5,7 +5,7 @@ data class Stopwatch(
     var timeLeft: Long,
     var isStarted: Boolean,
     var timeSpend: Long,
-    val newTimer: Boolean,
-    val startTime: Long,
+    var newTimer: Boolean,
+    var startTime: Long,
     var isFinish: Boolean
 )

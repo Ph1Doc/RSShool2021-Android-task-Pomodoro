@@ -3,7 +3,7 @@ package com.example.pomodoro.stopwatch
 
 interface StopwatchListener {
 
-    fun start(id: Int)
+    fun start(id: Int, currentMs: Long)
 
     fun stop(id: Int, currentMs: Long)
 

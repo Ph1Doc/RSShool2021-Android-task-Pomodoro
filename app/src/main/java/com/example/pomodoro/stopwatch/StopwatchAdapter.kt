@@ -30,7 +30,11 @@ class StopwatchAdapter(
 
             override fun areContentsTheSame(oldItem: Stopwatch, newItem: Stopwatch): Boolean {
                 return oldItem.timeLeft == newItem.timeLeft &&
-                        oldItem.isStarted == newItem.isStarted
+                        oldItem.isStarted == newItem.isStarted &&
+                        oldItem.newTimer == newItem.newTimer &&
+                        oldItem.timeSpend == newItem.timeSpend &&
+                        oldItem.startTime == newItem.startTime &&
+                        oldItem.isFinish == newItem.isFinish
             }
 
             override fun getChangePayload(oldItem: Stopwatch, newItem: Stopwatch) = Any()

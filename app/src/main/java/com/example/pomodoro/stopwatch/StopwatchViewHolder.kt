@@ -17,7 +17,6 @@ class StopwatchViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private var timer: CountDownTimer? = null
-
     private var timerNotAdd = true
 
     fun bind(stopwatch: Stopwatch) {
@@ -26,8 +25,11 @@ class StopwatchViewHolder(
         if (stopwatch.isFinish) {
             binding.root.setBackgroundResource(R.color.brown)
         }
-
         if (stopwatch.isStarted) {
+
+            val intervalPeriod = System.currentTimeMillis() - stopwatch.startTime
+            stopwatch.timeLeft = stopwatch.timeLeft - intervalPeriod
+            stopwatch.timeSpend = stopwatch.timeSpend + intervalPeriod
             startTimer(stopwatch)
         } else {
             stopTimer(stopwatch)
@@ -39,9 +41,15 @@ class StopwatchViewHolder(
     private fun initButtonsListeners(stopwatch: Stopwatch) {
         binding.startPauseButton.setOnClickListener {
             if (stopwatch.isStarted) {
+
+                val intervalPeriod = System.currentTimeMillis() - stopwatch.startTime
+                stopwatch.timeLeft = stopwatch.timeLeft - intervalPeriod
+                stopwatch.timeSpend = stopwatch.timeSpend + intervalPeriod
+
                 listener.stop(stopwatch.id, stopwatch.timeLeft)
             } else {
-                listener.start(stopwatch.id)
+
+                listener.start(stopwatch.id, stopwatch.timeLeft)
             }
         }
 
@@ -51,17 +59,20 @@ class StopwatchViewHolder(
 
             binding.root.setBackgroundResource(R.color.cardview_light_background)
             timerNotAdd = false
+            stopwatch.isStarted = false
         }
-        
+
         binding.deleteButton.setOnClickListener { listener.delete(stopwatch.id) }
     }
 
     private fun startTimer(stopwatch: Stopwatch) {
         stopwatch.isFinish = false
+
         binding.startPauseButton.text = "STOP"
         binding.root.setBackgroundResource(R.color.cardview_light_background)
-
         timer?.cancel()
+
+        stopwatch.startTime = System.currentTimeMillis()
         timer = getCountDownTimer(stopwatch)
         timer?.start()
 
@@ -75,19 +86,28 @@ class StopwatchViewHolder(
 
         binding.blinkingIndicator.isInvisible = true
         (binding.blinkingIndicator.background as? AnimationDrawable)?.stop()
+
+        if (stopwatch.isFinish) {
+            stopwatch.timeLeft = stopwatch.timeSpend + stopwatch.timeLeft
+            binding.stopwatchTimer.text = stopwatch.timeLeft.displayTime()
+            stopwatch.timeSpend = 0
+        }
     }
 
     private fun getCountDownTimer(stopwatch: Stopwatch): CountDownTimer {
         return object : CountDownTimer(PERIOD, UNIT_TEN_MS) {
-            val interval = UNIT_TEN_MS
 
             override fun onTick(millisUntilFinished: Long) {
-                if (stopwatch.timeLeft >= interval) {
-                    stopwatch.timeLeft -= interval
-                    binding.stopwatchTimer.text = stopwatch.timeLeft.displayTime()
+                if (stopwatch.timeLeft > 0) {
 
-                    stopwatch.timeSpend += interval
-                    binding.customView.setCurrent(stopwatch.timeSpend)
+                    val intervalPeriod = System.currentTimeMillis() - stopwatch.startTime
+
+                        stopwatch.timeLeft = stopwatch.timeLeft - intervalPeriod
+                        stopwatch.timeSpend = stopwatch.timeSpend + intervalPeriod
+
+                        binding.stopwatchTimer.text = stopwatch.timeLeft.displayTime()
+                        binding.customView.setCurrent(stopwatch.timeSpend)
+                    stopwatch.startTime = System.currentTimeMillis()
 
                 } else {
                     stopTimer(stopwatch)
@@ -98,10 +118,12 @@ class StopwatchViewHolder(
 
             override fun onFinish() {
                 binding.stopwatchTimer.text = stopwatch.timeSpend.displayTime()
-                stopwatch.timeLeft = stopwatch.timeSpend
+                stopwatch.timeLeft = stopwatch.timeSpend + stopwatch.timeLeft
+                stopwatch.timeSpend = 0
 
                 binding.root.setBackgroundResource(R.color.brown)
                 stopwatch.isFinish = true
+                stopwatch.isStarted = false
             }
         }
     }

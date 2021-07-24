@@ -2,6 +2,7 @@ package com.example.pomodoro
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import androidx.lifecycle.*
@@ -65,7 +66,6 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
             if (it.isStarted && it.timeLeft.toInt() != 0) {
                 startIntent.putExtra(STARTED_TIMER_TIME_MS,  it.timeLeft )
             }
-
         }
 
         startService(startIntent)
@@ -78,13 +78,13 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         startService(stopIntent)
     }
 
-    override fun start(id: Int) {
-        changeStopwatch(id, null, true)
+    override fun start(id: Int, currentMs: Long) {
+
+        changeStopwatch(id, currentMs, true)
     }
 
     override fun stop(id: Int, currentMs: Long) {
-        changeStopwatch(id, currentMs, false)
-//        Log.d("!!!!", "!!!!!!! currentMs " + currentMs)
+        changeStopwatch(id, null, false)
     }
 
     override fun reset(id: Int) {
@@ -100,9 +100,23 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         val newTimers = mutableListOf<Stopwatch>()
         stopwatches.forEach {
             if (it.id == id) {
-                newTimers.add(Stopwatch(it.id, currentMs ?: it.timeLeft, isStarted, it.timeSpend, newTimer = false, System.currentTimeMillis(), it.isFinish))
+                newTimers.add(Stopwatch(it.id, currentMs ?: it.timeLeft , isStarted, it.timeSpend, false, System.currentTimeMillis(), it.isFinish))
+
             } else {
-                newTimers.add(Stopwatch(it.id, it.timeLeft, false, it.timeSpend, newTimer = false, System.currentTimeMillis(), it.isFinish))
+                if (it.isStarted) {
+                    newTimers.add(Stopwatch(it.id, it.timeLeft - (System.currentTimeMillis() - it.startTime), false, it.timeSpend, false, it.startTime, it.isFinish))
+                } else {
+                    newTimers.add(Stopwatch(it.id, it.timeLeft, false, it.timeSpend, false, it.startTime, it.isFinish))
+
+                }
+
+                Log.d(
+                    "TAG",
+                    "!!!! getCountDownTimer \n stopwatch.timeSpend " + stopwatches[0].timeSpend
+                            + " \n stopwatch.timeLeft " + stopwatches[0].timeLeft
+                            + "\n stopwatch.startTime " + stopwatches[0].timeSpend
+                )
+
             }
         }
         stopwatchAdapter.submitList(newTimers)
