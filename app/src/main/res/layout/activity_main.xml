@@ -37,19 +37,10 @@
         android:backgroundTint="@color/red"
         android:inputType="number"
         android:textColorHint="#C5C4C3"
+        android:textCursorDrawable="@drawable/my_custom_cursor_drawable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/add_new_stopwatch_button"
         app:layout_constraintHorizontal_bias="0.083"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/timerView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/add_new_stopwatch_button"
-        app:layout_constraintStart_toEndOf="@+id/minutes"
-        app:layout_constraintTop_toBottomOf="@+id/recycler" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

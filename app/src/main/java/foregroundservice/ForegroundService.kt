@@ -37,6 +37,7 @@ class ForegroundService : Service() {
             .setContentTitle("Pomodoro timer")
             .setGroup("Timer")
             .setGroupSummary(false)
+            .setAutoCancel(true)
             .setDefaults(Notification.DEFAULT_VIBRATE)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentIntent(getPendingIntent())
@@ -74,10 +75,11 @@ class ForegroundService : Service() {
         if (isServiceStarted) {
             return
         }
-        Log.i("TAG", "commandStart()")
         try {
             moveToStartedState()
-            startForegroundAndShowNotification()
+            if (startTime.compareTo(0) != 0) {
+                startForegroundAndShowNotification()
+            }
             continueTimer(startTime)
         } finally {
             isServiceStarted = true
@@ -112,7 +114,6 @@ class ForegroundService : Service() {
         if (!isServiceStarted) {
             return
         }
-        Log.i("TAG", "commandStop()")
         try {
             job?.cancel()
             stopForeground(true)
@@ -124,10 +125,8 @@ class ForegroundService : Service() {
 
     private fun moveToStartedState() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Log.d("TAG", "moveToStartedState(): Running on Android O or higher")
             startForegroundService(Intent(this, ForegroundService::class.java))
         } else {
-            Log.d("TAG", "moveToStartedState(): Running on Android N or lower")
             startService(Intent(this, ForegroundService::class.java))
         }
     }
@@ -140,7 +139,6 @@ class ForegroundService : Service() {
 
     private fun getNotification(content: String) = builder.setContentText(content).build()
     private fun getNotificationAboutFinish() = builderFinish.setContentText("Time up").build()
-
 
     private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

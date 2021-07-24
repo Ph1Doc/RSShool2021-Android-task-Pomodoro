@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
     private val stopwatchAdapter = StopwatchAdapter(this)
     private val stopwatches = mutableListOf<Stopwatch>()
     private var nextId = 0
-    private var startTime = 0L
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +36,6 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
         binding.recycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = stopwatchAdapter
-        }
-
-        startTime = System.currentTimeMillis()
-
-        lifecycleScope.launch(Dispatchers.Main) {
-            while (true) {
-                binding.timerView.text = (System.currentTimeMillis() - startTime).displayTime()
-                delay(INTERVAL)
-            }
         }
 
         binding.addNewStopwatchButton.setOnClickListener {
