@@ -108,19 +108,10 @@ class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
 
             } else {
                 if (it.isStarted) {
-                    newTimers.add(Stopwatch(it.id, it.timeLeft - (System.currentTimeMillis() - it.startTime), false, it.timeSpend, false, it.startTime, it.isFinish, it.timerTime))
+                    newTimers.add(Stopwatch(it.id, it.timeLeft - (System.currentTimeMillis() - it.startTime), false, it.timeSpend + (System.currentTimeMillis() - it.startTime), false, it.startTime, it.isFinish, it.timerTime))
                 } else {
                     newTimers.add(Stopwatch(it.id, it.timeLeft, false, it.timeSpend, false, it.startTime, it.isFinish, it.timerTime))
-
                 }
-
-                Log.d(
-                    "TAG",
-                    "!!!! getCountDownTimer \n stopwatch.timeSpend " + stopwatches[0].timeSpend
-                            + " \n stopwatch.timeLeft " + stopwatches[0].timeLeft
-                            + "\n stopwatch.startTime " + stopwatches[0].timeSpend
-                )
-
             }
         }
         stopwatchAdapter.submitList(newTimers)

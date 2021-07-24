@@ -1,7 +1,6 @@
 package com.example.pomodoro.stopwatch
 
 import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.os.CountDownTimer
 import android.util.Log
@@ -24,12 +23,23 @@ class StopwatchViewHolder(
 
         if (stopwatch.isFinish) {
             binding.root.setBackgroundResource(R.color.brown)
+        } else {
+            binding.root.setBackgroundResource(R.color.cardview_light_background)
         }
+
+        if (stopwatch.timeSpend.compareTo(0) != 0 ) {
+            binding.customView.setPeriod(stopwatch.timerTime)
+            binding.customView.setCurrent(stopwatch.timeSpend)
+        } else {
+            binding.customView.setCurrent(0)
+        }
+
         if (stopwatch.isStarted) {
 
             val intervalPeriod = System.currentTimeMillis() - stopwatch.startTime
             stopwatch.timeLeft = stopwatch.timeLeft - intervalPeriod
             stopwatch.timeSpend = stopwatch.timeSpend + intervalPeriod
+            binding.customView.setCurrent(stopwatch.timeSpend)
             startTimer(stopwatch)
         } else {
             stopTimer(stopwatch)
@@ -54,7 +64,7 @@ class StopwatchViewHolder(
         }
 
         if (stopwatch.newTimer) {
-            binding.customView.setPeriod(stopwatch.timeLeft)
+            binding.customView.setPeriod(stopwatch.timerTime)
             binding.customView.setCurrent(0L)
 
             binding.root.setBackgroundResource(R.color.cardview_light_background)
@@ -113,7 +123,6 @@ class StopwatchViewHolder(
                     stopTimer(stopwatch)
                     onFinish()
                 }
-
             }
 
             override fun onFinish() {
@@ -121,6 +130,7 @@ class StopwatchViewHolder(
                 stopwatch.timeLeft = stopwatch.timerTime
                 stopwatch.timeSpend = 0
 
+                binding.customView.setCurrent(0L)
                 binding.root.setBackgroundResource(R.color.brown)
                 stopwatch.isFinish = true
                 stopwatch.isStarted = false
@@ -129,6 +139,7 @@ class StopwatchViewHolder(
     }
 
     private fun Long.displayTime(): String {
+
         if (this <= 0L) {
             return START_TIME
         }
