@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name="foregroundservice.ForegroundService"
+            android:name=".foregroundservice.ForegroundService"
             android:permission="android.permission.FOREGROUND_SERVICE" />
     </application>
 

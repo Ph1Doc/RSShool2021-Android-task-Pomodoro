@@ -50,7 +50,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <customview.CustomView
+        <com.example.pomodoro.customview.CustomView
             android:id="@+id/customView"
             android:layout_width="33dp"
             android:layout_height="31dp"

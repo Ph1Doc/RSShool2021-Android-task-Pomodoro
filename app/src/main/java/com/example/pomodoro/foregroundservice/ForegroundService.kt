@@ -1,4 +1,4 @@
-package foregroundservice
+package com.example.pomodoro.foregroundservice
 
 import android.app.*
 import android.content.Context

@@ -1,4 +1,4 @@
-package foregroundservice
+package com.example.pomodoro.foregroundservice
 
 const val START_TIME = "00:00:00:00"
 const val COMMAND_START = "COMMAND_START"

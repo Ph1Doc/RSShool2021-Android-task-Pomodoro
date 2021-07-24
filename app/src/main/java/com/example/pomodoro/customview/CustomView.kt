@@ -1,4 +1,4 @@
-package customview
+package com.example.pomodoro.customview
 
 import android.content.Context
 import android.graphics.Canvas

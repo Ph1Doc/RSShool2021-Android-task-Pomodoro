@@ -18,10 +18,10 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pomodoro.databinding.ActivityMainBinding
+import com.example.pomodoro.foregroundservice.*
 import com.example.pomodoro.stopwatch.Stopwatch
 import com.example.pomodoro.stopwatch.StopwatchAdapter
 import com.example.pomodoro.stopwatch.StopwatchListener
-import foregroundservice.*
 
 class MainActivity : AppCompatActivity(), StopwatchListener, LifecycleObserver {
 
